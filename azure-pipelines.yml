@@ -4,17 +4,16 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
-variables:
-  ARM_SUBSCRIPTION_ID: '3e1292a5-5ba2-445a-a910-d10a68561a8b'
-  ARM_CLIENT_ID: '<service-principal-client-id>'
-  ARM_CLIENT_SECRET: '<service-principal-secret>'
-  ARM_TENANT_ID: '<tenant-id>'
-
 steps:
 
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: '1.5.0'
+- script: |
+    sudo apt-get update
+    sudo apt-get install -y unzip
+    curl -LO https://releases.hashicorp.com/terraform/1.5.0/terraform_1.5.0_linux_amd64.zip
+    unzip terraform_1.5.0_linux_amd64.zip
+    sudo mv terraform /usr/local/bin/
+    terraform -version
+  displayName: 'Install Terraform'
 
 - script: terraform init
   displayName: 'Terraform Init'
